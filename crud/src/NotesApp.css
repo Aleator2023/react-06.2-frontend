@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Светлый фон для всей страницы */
+    padding: 20px;
+  }
+  
+  /* Стилизация контейнера для заметок */
+  .notes-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff; /* Белый фон для контейнера */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Тень вокруг контейнера */
+  }
+  
+  /* Стилизация карточек заметок */
+  .note-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9; /* Светлый фон для карточки */
+    border-radius: 5px; /* Скругление углов карточки */
+    position: relative;
+    display: flex;
+    justify-content: space-between; /* Распределение контента и кнопки удаления */
+  }
+  
+  /* Стилизация текста заметки */
+  .note-content {
+    word-break: break-all; /* Перенос слов внутри карточки */
+  }
+  
+  /* Стилизация кнопки удаления */
+  .delete-btn {
+    font-size: 16px;
+    border: none;
+    background-color: #ff4d4d; /* Красный фон для кнопки */
+    color: white; /* Белый текст на кнопке */
+    padding: 5px 10px;
+    border-radius: 50%; /* Круглая форма кнопки */
+    cursor: pointer;
+  }
+  
+  /* Стилизация формы добавления новой заметки */
+  .new-note-form {
+    display: flex;
+    gap: 10px; /* Отступ между элементами формы */
+    margin-bottom: 20px;
+  }
+  
+  /* Стилизация поля ввода для новой заметки */
+  .new-note-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* Скругление углов поля ввода */
+  }
+  
+  /* Стилизация кнопки добавления */
+  .add-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Зелёный цвет */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px; /* Скругление углов кнопки */
+  }
+  
+  /* Адаптивность */
+  @media (max-width: 600px) {
+    .notes-container {
+      width: 90%;
+      padding: 10px;
+    }
+  
+    .note-card {
+      flex-direction: column; /* Стек заметок вертикально на мобильных */
+      align-items: flex-start;
+    }
+  
+    .delete-btn {
+      margin-top: 10px; /* Отступ для кнопки удаления на мобильных */
+      padding: 5px 10px; /* Уменьшенный размер кнопки */
+    }
+  }
