@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './NotesApp.css';
+import api from './API'; 
 
 const NotesApp = () => {
   const [notes, setNotes] = useState([]);
   const [newNoteContent, setNewNoteContent] = useState('');
+  const [error, setError] = useState('');
 
   // Загрузка заметок при инициализации и после нажатия кнопки обновить
   useEffect(() => {
@@ -11,47 +13,52 @@ const NotesApp = () => {
   }, []);
 
   function loadNotes() {
-    fetch('http://localhost:7070/notes')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Ошибка сети');
-        }
-        return response.json();
-      })
+    api.loadNotes()
       .then(data => {
         setNotes(data);
+        setError(''); 
+        setNewNoteContent('');
       })
-      .catch(err => console.error('Ошибка при загрузке заметок:', err));
+      .catch(err => {
+        console.error('Ошибка при загрузке заметок:', err);
+        setError('Не удалось загрузить заметки. Попробуйте позже.');
+      });
   }
 
   // Добавление новой заметки
   const handleAddNote = () => {
-    fetch('http://localhost:7070/notes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: newNoteContent }),
-    })
-    .then(response => response.json())
-    .then(newNote => {
-      setNewNoteContent('');
-      setNotes([...notes, newNote]); // Добавить новую заметку непосредственно в состояние без дополнительного GET запроса
-    })
-    .catch(err => console.error('Ошибка при добавлении заметки:', err));
+    if (!newNoteContent.trim()) {
+      alert('Заметка не может быть пустой');
+      return;
+    }
+    api.addNote(newNoteContent)
+      .then(newNote => {
+        setNewNoteContent('');
+        setNotes([...notes, newNote]);
+        setError(''); 
+      })
+      .catch(err => {
+        console.error('Ошибка при добавлении заметки:', err);
+        setError('Не удалось добавить заметку. Попробуйте позже.');
+      });
   };
 
   // Удаление заметки
   const handleDeleteNote = (noteId) => {
-    fetch(`http://localhost:7070/notes/${noteId}`, {
-      method: 'DELETE',
-    })
-    .then(() => {
-      setNotes(notes.filter(note => note.id !== noteId)); // Обновить состояние локально
-    })
-    .catch(err => console.error('Ошибка при удалении заметки:', err));
+    api.deleteNote(noteId)
+      .then(() => {
+        setNotes(notes.filter(note => note.id !== noteId));
+        setError(''); 
+      })
+      .catch(err => {
+        console.error('Ошибка при удалении заметки:', err);
+        setError('Не удалось удалить заметку. Попробуйте позже.');
+      });
   };
 
   return (
     <div className="notes-container">
+      {error && <div className="error-message">{error}</div>} {}
       <button className="refresh-btn" onClick={loadNotes}>⟳ Обновить</button>
       <div>
         {notes.map(note => (
